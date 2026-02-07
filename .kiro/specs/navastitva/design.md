@@ -26,7 +26,7 @@ flowchart TD
     
     subgraph BACKEND["⚙️ BACKEND - AWS Lambda Microservices"]
         B1[Worker Service<br/>Profile & Videos]
-        B2[Employer Service<br/>Jobs & Reviews]
+        B2[Employer/Client Service<br/>Jobs & Contracts & Reviews]
         B3[Matchmaking Service<br/>Top 3 Workers]
         B4[Payment Service<br/>Escrow & Release]
     end
@@ -77,17 +77,17 @@ flowchart TD
 4. **BACKEND**: Trust Score calculated (video 40% + ratings 40% + history 20%)
 5. **FRONTEND**: Worker receives Skill Trust Card with QR code
 
-**Journey 2: Job Matching (4 steps)**
-1. **FRONTEND**: Employer speaks job requirements in any language
-2. **BACKEND**: Employer Service creates posting, Matchmaking Service activates
+**Journey 2: Job & Contract Matching (4 steps)**
+1. **FRONTEND**: Employer/client speaks job or contract requirements in any language
+2. **BACKEND**: Employer/Client Service creates posting, Matchmaking Service activates
 3. **AI**: Fair Wage Engine suggests wage, Translation converts to worker languages
 4. **BACKEND**: Top 3 workers matched (skill 40% + trust 30% + location 20% + availability 10%)
 
 **Journey 3: Work & Payment (5 steps)**
-1. **BACKEND**: Employer selects worker, Payment Service creates escrow
+1. **BACKEND**: Employer/client selects worker, Payment Service creates escrow
 2. **FRONTEND**: Worker accepts, availability auto-updates to "Busy"
-3. **FRONTEND**: Worker marks complete, employer notified
-4. **BACKEND**: Employer verifies, Payment Service releases funds
+3. **FRONTEND**: Worker marks complete, employer/client notified
+4. **BACKEND**: Employer/client verifies, Payment Service releases funds
 5. **FRONTEND**: Both parties receive SMS, worker's Trust Score updates
 
 ### Core Microservices
@@ -95,7 +95,7 @@ flowchart TD
 | Service | Responsibility | Key Operations |
 |---------|---------------|----------------|
 | **Worker Service** | Profile & skill management | Register, upload video, update availability |
-| **Employer Service** | Job posting & reviews | Create posting, submit review, view matches |
+| **Employer/Client Service** | Job & contract posting & reviews | Create posting, submit review, view matches |
 | **Matchmaking Service** | AI-powered matching | Rank workers, calculate scores, filter by location |
 | **Payment Service** | Escrow & transactions | Hold payment, release funds, handle disputes |
 | **Video Processing** | Video analysis pipeline | Compress, analyze skills, detect fraud |
@@ -241,10 +241,10 @@ interface SkillScore {
 }
 ```
 
-### 3. Employer Service
+### 3. Employer/Client Service
 
 **Responsibilities:**
-- Employer account management
+- Employer/client account management
 - Job and contract posting creation
 - Worker selection and hiring
 - Review and rating submission
@@ -252,7 +252,7 @@ interface SkillScore {
 **API Endpoints:**
 
 ```typescript
-interface EmployerServiceAPI {
+interface EmployerClientServiceAPI {
   // Create job or contract posting
   POST /employers/{employerId}/postings
   Request: {
@@ -495,12 +495,12 @@ function calculateProximity(workerLocation, postingLocation):
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Pending: Employer selects worker
+    [*] --> Pending: Employer/client selects worker
     Pending --> Held: Payment deposited
     Held --> Released: Work verified
     Held --> Disputed: Dispute raised
     Disputed --> Released: Dispute resolved (worker favor)
-    Disputed --> Refunded: Dispute resolved (employer favor)
+    Disputed --> Refunded: Dispute resolved (employer/client favor)
     Released --> [*]
     Refunded --> [*]
 ```
@@ -628,7 +628,7 @@ function calculateTrustScore(workerId):
     avgVideoScore = weightedAverage(videoScores, decayFactor=0.9)  # Recent videos weighted more
     videoComponent = avgVideoScore * 0.40
     
-    # Component 2: Employer Ratings (40%)
+    # Component 2: Employer/Client Ratings (40%)
     ratings = worker.reviews.map(r => r.rating * 20)  # Convert 1-5 to 0-100
     avgRating = average(ratings)
     ratingComponent = avgRating * 0.40
@@ -838,13 +838,13 @@ interface Review {
 
 **Postings Table:**
 - Partition Key: `postingId`
-- GSI 1: `employerId-createdDate-index` (for employer's posting history)
+- GSI 1: `employerClientId-createdDate-index` (for employer/client's posting history)
 - GSI 2: `status-expiryDate-index` (for active postings cleanup)
 
 **Contracts Table:**
 - Partition Key: `contractId`
 - GSI 1: `workerId-status-index` (for worker's contract history)
-- GSI 2: `employerId-status-index` (for employer's contract history)
+- GSI 2: `employerClientId-status-index` (for employer/client's contract history)
 
 **Videos Table:**
 - Partition Key: `videoId`

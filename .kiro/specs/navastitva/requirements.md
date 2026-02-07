@@ -3,32 +3,43 @@
 
 ## Introduction
 
-NavAstitva is a multilingual, video-first platform that empowers rural and informal skilled workers in India by connecting them with employers through AI-powered skill verification and matchmaking. The platform goes beyond traditional job boards by offering:
+NavAstitva is a multilingual, video-first platform that empowers rural and informal skilled workers in India by connecting them with employers/clients through AI-powered skill verification and matchmaking. The platform goes beyond traditional job boards by offering:
 
 - **Escrow-based secure payments** to ensure fair wages
-- **Job and contract posting** for employers, creating transparent work opportunities
+- **Job and contract posting** for employers/clients, creating transparent work opportunities and freelance contracts
 - **Skill trust card** for workers, showcasing verified skills that can open doors to multiple opportunities across sectors
 - **Voice-activated interfaces and assisted onboarding** to bridge the digital divide
-- **Offline support and AI-driven trust ratings** to build confidence between workers and employers
+- **Offline support and AI-driven trust ratings** to build confidence between workers and employers/clients
 
-By combining skill verification, secure payments, and discoverable skill profiles, NavAstitva not only connects workers to immediate jobs but also empowers them for future opportunities and long-term career growth.
+By combining skill verification, secure payments, and discoverable skill profiles, NavAstitva not only connects workers to immediate jobs and freelance contracts but also empowers them for future business opportunities and long-term career growth.
 
-## Target Audience (Workers)
+## Target Audience
 
-Our platform empowers skilled rural workers to access verified job ,contract opportunities and fair pay. It serves a wide range of workers, such as:
+### Workers
+
+Our platform empowers skilled rural workers to access verified job opportunities, freelance contracts and fair pay. It serves a wide range of workers, such as:
 
 - **Carpenters, craftsmen, decorators**
 - **Women cooks, home chefs, delivery personnel**
 - **Electricians, plumbers, tutors, and other local service providers**
+
+### Employers / Clients
+
+Businesses, SMEs, or individual clients who need trusted, skilled workers for jobs or freelance contracts. They benefit from:
+
+- **Access to verified talent** through AI skill verification
+- **Job and contract posting** for quick hiring
+- **Trust scores and skill cards** to make informed hiring decisions
+- **Secure escrow payments** ensuring transparent transactions
 
 ### Why This Matters for Bharat ?
 
 India's rural skilled workforce—comprising artisans, electricians, carpenters, cooks, and countless other trades—represents the backbone of our nation's economy. Yet these skilled individuals face systemic barriers that prevent them from accessing fair opportunities:
 
 **The Challenge:**
-- **Digital Exclusion**: Over 65% of India's population lives in rural areas, where digital literacy and English proficiency are limited. Traditional job platforms require formal resumes and English skills, automatically excluding millions of capable workers.
-- **Trust Deficit**: Without formal credentials or verifiable work history, skilled workers struggle to prove their capabilities to distant employers, leading to exploitation by middlemen who take 20-30% commissions.
-- **Economic Inequality**: Rural workers often earn 40-50% less than their urban counterparts for the same skills, not due to lack of ability, but lack of access to fair-paying opportunities.
+- **Digital Exclusion**: Over 65% of India's population lives in rural areas, where digital literacy and English proficiency are limited. Traditional job platforms require formal resumes and English skills, automatically excluding millions of capable workers from jobs and freelance contracts.
+- **Trust Deficit**: Without formal credentials or verifiable work history, skilled workers struggle to prove their capabilities to distant employers/clients, leading to exploitation by middlemen who take 20-30% commissions.
+- **Economic Inequality**: Rural workers often earn 40-50% less than their urban counterparts for the same skills, not due to lack of ability, but lack of access to fair-paying jobs, contracts, and business opportunities.
 - **Dignity Gap**: The absence of portable, verifiable credentials means workers must repeatedly prove themselves, undermining their dignity and professional identity.
 
 **The Opportunity:**
@@ -40,9 +51,9 @@ NavAstitva leverages India's growing smartphone penetration (750+ million users)
 
 **Impact on Bharat:**
 By empowering rural skilled workers with technology that respects their language, literacy levels, and connectivity constraints, NavAstitva can:
-- Increase rural incomes by 30-40% through direct employer connections
-- Create economic opportunities for 100+ million skilled workers across India
-- Reduce urban migration pressure by enabling remote work opportunities
+- Increase rural incomes by 30-40% through direct employer/client connections and freelance contracts
+- Create economic opportunities for 100+ million skilled workers across India through jobs and business opportunities
+- Reduce urban migration pressure by enabling remote work opportunities and freelance contracts
 - Preserve traditional crafts and skills by making them economically viable
 - Strengthen the dignity of manual labor in Indian society
 
@@ -50,8 +61,9 @@ This is not just a platform—it's a movement toward economic justice and social
 
 ## Glossary
 
-- **Worker**: A rural skilled worker (artisan, electrician, carpenter, cook, etc.) seeking employment opportunities
-- **Employer**: An individual or organization seeking to hire skilled workers
+- **Worker**: A rural skilled worker (artisan, electrician, carpenter, cook, etc.) seeking employment opportunities, freelance contracts, and business opportunities
+- **Employer/Client**: An individual, business, or organization seeking to hire skilled workers for jobs or freelance contracts
+- **Job_Contract_Poster**: An employer/client who posts job or contract opportunities on the platform
 - **Skill_Trust_Engine**: The AI system that analyzes videos, verifies skills, and generates trust scores
 - **Living_Resume**: A video-based portfolio showcasing a worker's skills through demonstration videos
 - **Skill_Trust_Card**: A portable digital credential containing a worker's verified skills and trust score
@@ -69,7 +81,7 @@ This is not just a platform—it's a movement toward economic justice and social
 
 ### Requirement 1: Worker Video Profile Creation
 
-**User Story:** As a worker, I want to create a video-based skill profile in my local language, so that I can showcase my abilities to potential employers without needing formal documentation.
+**User Story:** As a worker, I want to create a video-based skill profile in my local language, so that I can showcase my abilities to potential employers/clients without needing formal documentation.
 
 #### Acceptance Criteria
 
@@ -105,7 +117,7 @@ This is not just a platform—it's a movement toward economic justice and social
 
 ### Requirement 4: AI-Powered Skill Verification
 
-**User Story:** As an employer, I want AI-verified skill assessments of workers, so that I can trust the capabilities shown in their profiles without in-person verification.
+**User Story:** As an employer/client, I want AI-verified skill assessments of workers, so that I can trust the capabilities shown in their profiles without in-person verification.
 
 #### Acceptance Criteria
 
@@ -113,7 +125,7 @@ This is not just a platform—it's a movement toward economic justice and social
 2. WHEN analysis is complete, THE Skill_Trust_Engine SHALL generate a skill-specific score (0-100) based on video analysis
 3. WHEN multiple videos exist for the same skill, THE Skill_Trust_Engine SHALL compute an aggregate skill score weighted by recency
 4. WHEN video authenticity is questionable, THE Video_Verification_System SHALL flag potential fraud or plagiarism for manual review
-5. WHEN a Trust_Score is calculated, THE Skill_Trust_Engine SHALL combine video analysis scores (40%), employer ratings (40%), and completion history (20%)
+5. WHEN a Trust_Score is calculated, THE Skill_Trust_Engine SHALL combine video analysis scores (40%), employer/client ratings (40%), and completion history (20%)
 
 ### Requirement 5: Skill Trust Card Generation
 
@@ -122,18 +134,18 @@ This is not just a platform—it's a movement toward economic justice and social
 #### Acceptance Criteria
 
 1. WHEN a worker completes at least one verified skill video, THE System SHALL generate a Skill_Trust_Card containing worker ID, skills, and Trust_Score
-2. WHEN the Skill_Trust_Card is accessed, THE System SHALL display a QR code that employers can scan for instant verification
-3. WHEN an employer scans the QR code, THE System SHALL display the worker's verified skills, Trust_Score, and recent reviews
+2. WHEN the Skill_Trust_Card is accessed, THE System SHALL display a QR code that employers/clients can scan for instant verification
+3. WHEN an employer/client scans the QR code, THE System SHALL display the worker's verified skills, Trust_Score, and recent reviews
 4. WHEN a worker's Trust_Score changes, THE Skill_Trust_Card SHALL update automatically within 1 hour
 5. WHERE offline access is needed, THE Skill_Trust_Card SHALL be downloadable as a PDF with embedded QR code
 
-### Requirement 6: Employer Job and Contract Posting
+### Requirement 6: Job & Contract Posting
 
-**User Story:** As an employer, I want to post job or contract requirements using voice or text in my preferred language, so that I can quickly find suitable workers without complex forms.
+**User Story:** As a job & contract poster, I want to post job or contract requirements using voice or text in my preferred language, so that I can quickly find suitable workers without complex forms.
 
 #### Acceptance Criteria
 
-1. WHEN an employer speaks job or contract requirements, THE Voice_Interface SHALL transcribe and structure the posting with skill tags, location, duration, and work type (job/contract)
+1. WHEN a job & contract poster speaks job or contract requirements, THE Voice_Interface SHALL transcribe and structure the posting with skill tags, location, duration, and work type (job/contract)
 2. WHEN a posting is created, THE System SHALL require minimum fields: skill type, location, duration, work type (job/contract), and budget range
 3. WHEN budget is specified, THE Fair_Wage_Engine SHALL compare it against market rates and suggest adjustments if below fair wage
 4. WHEN a posting is submitted, THE AI_Matchmaking_Engine SHALL identify and rank the top 3 matching workers within 30 seconds
@@ -141,7 +153,7 @@ This is not just a platform—it's a movement toward economic justice and social
 
 ### Requirement 7: AI-Powered Worker Matchmaking
 
-**User Story:** As an employer, I want the system to automatically match me with the most suitable workers based on skills, location, and reliability, so that I can save time in the hiring process.
+**User Story:** As an employer/client, I want the system to automatically match me with the most suitable workers based on skills, location, and reliability, so that I can save time in the hiring process.
 
 #### Acceptance Criteria
 
@@ -149,7 +161,7 @@ This is not just a platform—it's a movement toward economic justice and social
 2. WHEN matches are generated, THE System SHALL present the top 3 workers with their profiles, Trust_Scores, and estimated response time
 3. WHEN a worker is unavailable, THE AI_Matchmaking_Engine SHALL exclude them from matches and select the next best candidate
 4. WHEN location is specified, THE AI_Matchmaking_Engine SHALL prioritize workers within 50km radius
-5. WHEN no suitable matches exist, THE System SHALL notify the employer and suggest broadening search criteria
+5. WHEN no suitable matches exist, THE System SHALL notify the employer/client and suggest broadening search criteria
 
 ### Requirement 8: Secure Escrow-Based Payments
 
@@ -157,19 +169,19 @@ This is not just a platform—it's a movement toward economic justice and social
 
 #### Acceptance Criteria
 
-1. WHEN an employer accepts a worker, THE Escrow_System SHALL hold the agreed payment amount in escrow before work begins
-2. WHEN work is marked complete by the worker, THE System SHALL notify the employer to verify completion
-3. WHEN the employer confirms completion, THE Escrow_System SHALL release payment to the worker's bank account within 24 hours
-4. IF the employer disputes completion, THEN THE System SHALL initiate a review process and hold payment for up to 7 days
-5. WHEN payment is released, THE System SHALL send confirmation notifications to both worker and employer via SMS
+1. WHEN an employer/client accepts a worker, THE Escrow_System SHALL hold the agreed payment amount in escrow before work begins
+2. WHEN work is marked complete by the worker, THE System SHALL notify the employer/client to verify completion
+3. WHEN the employer/client confirms completion, THE Escrow_System SHALL release payment to the worker's bank account within 24 hours
+4. IF the employer/client disputes completion, THEN THE System SHALL initiate a review process and hold payment for up to 7 days
+5. WHEN payment is released, THE System SHALL send confirmation notifications to both worker and employer/client via SMS
 
 ### Requirement 9: Transparent Rating and Review System
 
-**User Story:** As an employer, I want to rate workers after job or contract completion, so that future employers can make informed decisions and workers are incentivized to maintain quality.
+**User Story:** As an employer/client, I want to rate workers after job or contract completion, so that future employers/clients can make informed decisions and workers are incentivized to maintain quality.
 
 #### Acceptance Criteria
 
-1. WHEN a job or contract is completed, THE System SHALL prompt the employer to provide a star rating (1-5) and optional voice/text review
+1. WHEN a job or contract is completed, THE System SHALL prompt the employer/client to provide a star rating (1-5) and optional voice/text review
 2. WHEN a review is submitted, THE System SHALL update the worker's Trust_Score within 1 hour
 3. WHEN a worker receives a rating below 3 stars, THE System SHALL notify the worker and request improvement feedback
 4. WHEN reviews are displayed, THE System SHALL show the most recent 10 reviews with star ratings and timestamps
@@ -185,15 +197,15 @@ This is not just a platform—it's a movement toward economic justice and social
 2. WHEN video metadata is analyzed, THE Video_Verification_System SHALL verify that recording timestamp and location are consistent with upload time
 3. WHEN deepfake indicators are detected, THE Video_Verification_System SHALL flag the video for manual review
 4. WHEN a worker uploads multiple identical videos, THE System SHALL reject duplicates and notify the worker
-5. WHEN fraud is confirmed, THE System SHALL suspend the worker's account and notify affected employers
+5. WHEN fraud is confirmed, THE System SHALL suspend the worker's account and notify affected employers/clients
 
 ### Requirement 11: Multilingual Translation and Transcription
 
-**User Story:** As an employer who speaks a different language than the worker, I want automatic translation of voice content, so that I can understand worker profiles and communicate effectively.
+**User Story:** As an employer/client who speaks a different language than the worker, I want automatic translation of voice content, so that I can understand worker profiles and communicate effectively.
 
 #### Acceptance Criteria
 
-1. WHEN a worker's voice narration is in a different language than the employer's preference, THE System SHALL provide real-time translated transcription
+1. WHEN a worker's voice narration is in a different language than the employer/client's preference, THE System SHALL provide real-time translated transcription
 2. WHEN translation is displayed, THE System SHALL show both original language and translated text with language labels
 3. WHEN voice messages are exchanged, THE System SHALL translate and provide audio playback in the recipient's preferred language
 4. WHEN translation confidence is below 80%, THE System SHALL flag the content and suggest manual verification
@@ -219,7 +231,7 @@ This is not just a platform—it's a movement toward economic justice and social
 
 1. WHEN a job or contract posting is created, THE Fair_Wage_Engine SHALL analyze market rates for the skill type, location, and work duration
 2. WHEN wage data is insufficient, THE Fair_Wage_Engine SHALL use regional averages and skill category benchmarks
-3. WHEN an employer's budget is below fair wage, THE Fair_Wage_Engine SHALL display a warning and suggest a minimum fair wage
+3. WHEN an employer/client's budget is below fair wage, THE Fair_Wage_Engine SHALL display a warning and suggest a minimum fair wage
 4. WHEN a worker views a posting, THE System SHALL display the offered wage alongside the recommended fair wage range
 5. WHEN wage recommendations are generated, THE Fair_Wage_Engine SHALL update rates monthly based on market trends
 
@@ -237,12 +249,12 @@ This is not just a platform—it's a movement toward economic justice and social
 
 ### Requirement 15: Platform Security and Data Privacy
 
-**User Story:** As a worker, I want my personal information and videos to be securely stored and only shared with verified employers, so that my privacy is protected.
+**User Story:** As a worker, I want my personal information and videos to be securely stored and only shared with verified employers/clients, so that my privacy is protected.
 
 #### Acceptance Criteria
 
 1. WHEN personal data is stored, THE System SHALL encrypt all sensitive information (Aadhaar, bank details, contact info) using AES-256 encryption
 2. WHEN a video is uploaded, THE System SHALL store it in a secure S3 bucket with access restricted to authenticated users only
-3. WHEN an employer views a worker profile, THE System SHALL log the access with timestamp and employer ID for audit purposes
+3. WHEN an employer/client views a worker profile, THE System SHALL log the access with timestamp and employer/client ID for audit purposes
 4. WHEN a worker deletes their account, THE System SHALL permanently remove all personal data within 30 days per data protection regulations
-5. WHEN authentication occurs, THE System SHALL use multi-factor authentication for employer accounts and OTP-based verification for worker accounts
+5. WHEN authentication occurs, THE System SHALL use multi-factor authentication for employer/client accounts and OTP-based verification for worker accounts

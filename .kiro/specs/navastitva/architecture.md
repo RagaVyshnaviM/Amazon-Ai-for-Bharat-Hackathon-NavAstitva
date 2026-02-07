@@ -20,7 +20,8 @@ This architecture is designed for:
 │  ┌──────────────┐         ┌──────────────┐      ┌──────────────┐   │
 │  │   Flutter    │         │   Flutter    │      │  Enrollment  │   │
 │  │  Mobile App  │         │   Web App    │      │    Kiosk     │   │
-│  │  (Workers)   │         │  (Employers) │      │ (Panchayats) │   │
+│  │  (Workers)   │         │(Employers/   │      │ (Panchayats) │   │
+│  │              │         │  Clients)    │      │              │   │
 │  └──────┬───────┘         └──────┬───────┘      └──────┬───────┘   │
 │         │                        │                     │           │
 │         └────────────────────────┼─────────────────────┘           │
@@ -62,8 +63,9 @@ This architecture is designed for:
 │                                                                       │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐   │
 │  │   Lambda    │  │   Lambda    │  │   Lambda    │  │   Lambda    │   │
-│  │   Worker    │  │  Employer   │  │    Video    │  │   Payment   │   │
-│  │  Services   │  │  Services   │  │  Processing │  │   Handler   │   │
+│  │   Worker    │  │  Employer/  │  │    Video    │  │   Payment   │   │
+│  │  Services   │  │   Client    │  │  Processing │  │   Handler   │   │
+│  │             │  │  Services   │  │             │  │             │   │
 │  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘   │
 │         │                │                │                │          │
 └─────────┼────────────────┼────────────────┼────────────────┼──────────┘
@@ -86,6 +88,7 @@ This architecture is designed for:
 │  │  • Voice-to-text transcription                               │     │
 │  │  • Fair wage recommendation                                  │     │
 │  │  • Fraud detection                                           │     │
+│  │  • Job & contract matching                                   │     │
 │  └──────────────────────────────────────────────────────────────┘     │
 │                                                                       │
 │  ┌──────────────────────────────────────────────────────────────┐     │
@@ -104,7 +107,7 @@ This architecture is designed for:
 │  ┌──────────────────────────────────────────────────────────────┐     │
 │  │              Amazon Translate                                │     │
 │  │  • Real-time language translation                            │     │
-│  │  • Worker ↔ Employer communication                           │     │
+│  │  • Worker ↔ Employer/Client communication                    │     │
 │  └──────────────────────────────────────────────────────────────┘     │
 │                                                                       │
 └───────────────────────────────────────────────────────────────────────┘
@@ -130,7 +133,7 @@ This architecture is designed for:
 │  ┌────────────────────────────────────────────────────────────┐          │
 │  │              Amazon DynamoDB                               │          │
 │  │  • Worker profiles & skill scores                          │          │
-│  │  • Job postings & matches                                  │          │
+│  │  • Job & contract postings & matches                       │          │
 │  │  • Trust scores & ratings                                  │          │
 │  │  • Real-time updates (low latency)                         │          │
 │  │  • Global tables for multi-region support                  │          │
@@ -154,7 +157,7 @@ This architecture is designed for:
 │  ┌────────────────────────────────────────────────────────────┐          │
 │  │              Amazon EventBridge                            │          │
 │  │  • Event-driven workflows                                  │          │
-│  │  • Job matching triggers                                   │          │
+│  │  • Job & contract matching triggers                        │          │
 │  │  • Payment processing events                               │          │
 │  └────────────────────────────────────────────────────────────┘          │
 │                                                                          │
@@ -167,7 +170,7 @@ This architecture is designed for:
 │                                                                          │
 │  ┌────────────────────────────────────────────────────────────┐          │
 │  │              Amazon SNS                                    │          │
-│  │  • Push notifications (job matches, payments)              │          │
+│  │  • Push notifications (job & contract matches, payments)  │          │
 │  │  • SMS alerts (low-data fallback)                          │          │
 │  └────────────────────────────────────────────────────────────┘          │
 │                                                                          │
@@ -196,7 +199,7 @@ This architecture is designed for:
 │                                                                          │
 │  ┌────────────────────────────────────────────────────────────┐          │
 │  │              AWS IAM & Cognito                             │          │
-│  │  • User authentication (workers & employers)               │          │
+│  │  • User authentication (workers & employers/clients)       │          │
 │  │  • Role-based access control                               │          │
 │  │  • Social login (Google, Phone OTP)                        │          │
 │  └────────────────────────────────────────────────────────────┘          │
@@ -257,12 +260,12 @@ This architecture is designed for:
 6. Worker gets "Skill Trust Score" via SNS notification
 ```
 
-### Job Matching Flow
+### Job & Contract Matching Flow
 ```
-1. Employer posts job via voice note
+1. Employer/client posts job or contract via voice note
 2. API Gateway → Lambda
 3. Transcribe: Voice → Text
-4. Translate: Employer language → Worker language
+4. Translate: Employer/client language → Worker language
 5. Bedrock: AI matches top 3 workers based on:
    - Skill score
    - Location proximity
@@ -273,10 +276,10 @@ This architecture is designed for:
 
 ### Payment Flow
 ```
-1. Employer deposits to escrow (Razorpay API)
+1. Employer/client deposits to escrow (Razorpay API)
 2. Worker completes task → uploads proof video
 3. Rekognition verifies task completion
-4. Employer approves (or AI auto-approves after 48h)
+4. Employer/client approves (or AI auto-approves after 48h)
 5. Lambda triggers payment release
 6. Funds transferred to worker's bank account
 7. Both parties rate each other → Trust Score updated
