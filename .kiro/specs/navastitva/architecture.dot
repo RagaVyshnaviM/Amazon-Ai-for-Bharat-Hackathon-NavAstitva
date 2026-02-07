@@ -1,0 +1,132 @@
+digraph NavAstitva {
+    rankdir=LR;
+    node [shape=box, style="filled,rounded", fontname="Arial", fontsize=16];
+    edge [color="#455A64", penwidth=2.5, arrowsize=0.8, fontsize=14];
+    graph [bgcolor=white, pad=1.5, nodesep=1.2, ranksep=2.0, dpi=400];
+    
+    label="\n\nNavAstitva - AI-Powered Rural Skill Platform\n";
+    labelloc=t;
+    fontsize=24;
+    fontname="Arial Bold";
+    
+    // Client Layer
+    subgraph cluster_0 {
+        label="Client Layer";
+        style="filled,rounded";
+        fillcolor="#E0F2F1";
+        fontsize=18;
+        fontname="Arial Bold";
+        color="#4DB6AC";
+        penwidth=3;
+        labeljust="c";
+        labelloc="t";
+        
+        clients [label="Responsive Flutter App\n\n(Workers & Employers)", 
+                fillcolor="#4DB6AC", fontcolor=white, width=3.5, height=1.5];
+    }
+    
+    // Serverless Compute Layer
+    subgraph cluster_1 {
+        label="Serverless Compute Layer";
+        style="filled,rounded";
+        fillcolor="#E8EAF6";
+        fontsize=18;
+        fontname="Arial Bold";
+        color="#3949AB";
+        penwidth=3;
+        labeljust="c";
+        labelloc="t";
+        
+        compute [label="AWS Lambda + API Gateway\n\nWorker Services | Employer Services\nVideo Processing | Payment Processing", 
+                fillcolor="#3949AB", fontcolor=white, width=3.5, height=1.5];
+    }
+    
+    // AI/ML Layer
+    subgraph cluster_2 {
+        label="AI/ML Layer";
+        style="filled,rounded";
+        fillcolor="#FFEBEE";
+        fontsize=18;
+        fontname="Arial Bold";
+        color="#E53935";
+        penwidth=3;
+        labeljust="c";
+        labelloc="t";
+        
+        ai [label="Amazon Bedrock + Rekognition\n\nSkill Verification | Video Analysis\nMultilingual Support", 
+           fillcolor="#E53935", fontcolor=white, width=3.5, height=1.5];
+    }
+    
+    // Storage Layer
+    subgraph cluster_3 {
+        label="Storage Layer";
+        style="filled,rounded";
+        fillcolor="#E3F2FD";
+        fontsize=18;
+        fontname="Arial Bold";
+        color="#1E88E5";
+        penwidth=3;
+        labeljust="c";
+        labelloc="t";
+        
+        storage [label="S3 + DynamoDB + RDS\n\nProfiles | Jobs & Contracts\nVideos | Transaction & Audit Data", 
+                fillcolor="#1E88E5", fontcolor=white, width=3.5, height=1.5];
+    }
+    
+    // Event-Driven Workflows Layer
+    subgraph cluster_4 {
+        label="Event-Driven Workflows Layer";
+        style="filled,rounded";
+        fillcolor="#FFF8E1";
+        fontsize=18;
+        fontname="Arial Bold";
+        color="#FFC107";
+        penwidth=3;
+        labeljust="c";
+        labelloc="t";
+        
+        events [label="EventBridge + SQS + SNS\n\nJob & Contract Matching\nAsync Tasks | Push Notifications", 
+               fillcolor="#FFC107", fontcolor="#263238", width=3.5, height=1.5];
+    }
+    
+    // Security & Monitoring Layer
+    subgraph cluster_5 {
+        label="Security & Monitoring Layer";
+        style="filled,rounded";
+        fillcolor="#ECEFF1";
+        fontsize=18;
+        fontname="Arial Bold";
+        color="#607D8B";
+        penwidth=3;
+        labeljust="c";
+        labelloc="t";
+        
+        security [label="IAM + Cognito + WAF + CloudWatch\n\nAuthentication | DDoS Protection\nMetrics & Logs", 
+                 fillcolor="#607D8B", fontcolor=white, width=3.5, height=1.5];
+    }
+    
+    // Edge Optimization Layer
+    subgraph cluster_6 {
+        label="Edge Optimization Layer";
+        style="filled,rounded";
+        fillcolor="#FFF9C4";
+        fontsize=18;
+        fontname="Arial Bold";
+        color="#FFD54F";
+        penwidth=3;
+        labeljust="c";
+        labelloc="t";
+        
+        edge_cdn [label="Amazon CloudFront CDN\n\nVideo Caching | Content Delivery\nLow Latency | Bandwidth", 
+                 fillcolor="#FFD54F", fontcolor="#263238", width=3.5, height=1.5];
+    }
+    
+    // Main flow
+    clients -> compute [label="HTTPS"];
+    compute -> ai [label="AI Process"];
+    compute -> storage [label="Store Data"];
+    compute -> events [label="Trigger"];
+    events -> clients [label="Notify"];
+    security -> compute [style=dashed, label="Protect"];
+    edge_cdn -> clients [style=dashed, label="Accelerate"];
+}
