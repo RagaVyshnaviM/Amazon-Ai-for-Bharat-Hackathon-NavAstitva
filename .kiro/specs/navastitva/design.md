@@ -1,5 +1,5 @@
 # Design Document: NavAstitva
-*A new beginning with dignity and purpose*
+*Your Work,Your Identity*
 
 ## Overview
 
