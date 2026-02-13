@@ -323,13 +323,13 @@ This architecture is designed for:
 ## Futrue Deployment Strategy
 
 ### Phase 1: MVP (Month 1-2)
-- Single region (Mumbai)
+- Single region (Hyderabad)
 - 1,000 beta users
 - Basic video upload + skill verification
 - Manual payment processing
 
 ### Phase 2: Scale (Month 3-6)
-- Multi-region (Mumbai + Hyderabad)
+- Multi-region (Hyderabad + Mumbai)
 - 10,000 users
 - Automated escrow payments
 - AI-powered job matching
