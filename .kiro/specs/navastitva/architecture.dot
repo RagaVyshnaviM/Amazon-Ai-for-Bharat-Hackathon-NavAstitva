@@ -1,12 +1,12 @@
 digraph NavAstitva {
     rankdir=LR;
-    node [shape=box, style="filled,rounded", fontname="Arial", fontsize=16];
-    edge [color="#455A64", penwidth=2.5, arrowsize=0.8, fontsize=14];
-    graph [bgcolor=white, pad=1.5, nodesep=1.2, ranksep=2.0, dpi=400];
+    node [shape=box, style="filled,rounded", fontname="Arial", fontsize=18];
+    edge [color="#455A64", penwidth=3, arrowsize=1.0, fontsize=16];
+    graph [bgcolor=white, pad=2.0, nodesep=1.5, ranksep=2.5, dpi=600];
     
     label="\n\nNavAstitva - AI-Powered Rural Skill Platform\n";
     labelloc=t;
-    fontsize=24;
+    fontsize=28;
     fontname="Arial Bold";
     
     // Client Layer
@@ -14,15 +14,15 @@ digraph NavAstitva {
         label="Client Layer";
         style="filled,rounded";
         fillcolor="#E0F2F1";
-        fontsize=18;
+        fontsize=20;
         fontname="Arial Bold";
         color="#4DB6AC";
-        penwidth=3;
+        penwidth=4;
         labeljust="c";
         labelloc="t";
         
         clients [label="Responsive Flutter App\n\n(Workers & Employers)", 
-                fillcolor="#4DB6AC", fontcolor=white, width=3.5, height=1.5];
+                fillcolor="#4DB6AC", fontcolor=white, width=4.0, height=1.8];
     }
     
     // Serverless Compute Layer
@@ -30,15 +30,15 @@ digraph NavAstitva {
         label="Serverless Compute Layer";
         style="filled,rounded";
         fillcolor="#E8EAF6";
-        fontsize=18;
+        fontsize=20;
         fontname="Arial Bold";
         color="#3949AB";
-        penwidth=3;
+        penwidth=4;
         labeljust="c";
         labelloc="t";
         
-        compute [label="AWS Lambda + API Gateway\n\nWorker Services | Employer Services\nVideo Processing | Payment Processing", 
-                fillcolor="#3949AB", fontcolor=white, width=3.5, height=1.5];
+        compute [label="AWS Lambda + API Gateway\n\nWorker Services | Employer Services\nVideo Processing | Payment Processing\nAI Contract Generation", 
+                fillcolor="#3949AB", fontcolor=white, width=4.0, height=1.8];
     }
     
     // AI/ML Layer
@@ -46,15 +46,15 @@ digraph NavAstitva {
         label="AI/ML Layer";
         style="filled,rounded";
         fillcolor="#FFEBEE";
-        fontsize=18;
+        fontsize=20;
         fontname="Arial Bold";
         color="#E53935";
-        penwidth=3;
+        penwidth=4;
         labeljust="c";
         labelloc="t";
         
-        ai [label="Amazon Bedrock + Rekognition\n\nSkill Verification | Video Analysis\nMultilingual Support", 
-           fillcolor="#E53935", fontcolor=white, width=3.5, height=1.5];
+        ai [label="Amazon Bedrock + Rekognition\n\nSkill Verification | Video Analysis\nMultilingual Support | Contract Generation", 
+           fillcolor="#E53935", fontcolor=white, width=4.0, height=1.8];
     }
     
     // Storage Layer
@@ -62,15 +62,15 @@ digraph NavAstitva {
         label="Storage Layer";
         style="filled,rounded";
         fillcolor="#E3F2FD";
-        fontsize=18;
+        fontsize=20;
         fontname="Arial Bold";
         color="#1E88E5";
-        penwidth=3;
+        penwidth=4;
         labeljust="c";
         labelloc="t";
         
-        storage [label="S3 + DynamoDB + RDS\n\nProfiles | Jobs & Contracts\nVideos | Transaction & Audit Data", 
-                fillcolor="#1E88E5", fontcolor=white, width=3.5, height=1.5];
+        storage [label="S3 + DynamoDB + RDS\n\nProfiles | Jobs & Contracts | Equipment Data\nVideos | Digital Contracts | Transactions", 
+                fillcolor="#1E88E5", fontcolor=white, width=4.0, height=1.8];
     }
     
     // Event-Driven Workflows Layer
@@ -78,15 +78,15 @@ digraph NavAstitva {
         label="Event-Driven Workflows Layer";
         style="filled,rounded";
         fillcolor="#FFF8E1";
-        fontsize=18;
+        fontsize=20;
         fontname="Arial Bold";
         color="#FFC107";
-        penwidth=3;
+        penwidth=4;
         labeljust="c";
         labelloc="t";
         
         events [label="EventBridge + SQS + SNS\n\nJob & Contract Matching\nAsync Tasks | Push Notifications", 
-               fillcolor="#FFC107", fontcolor="#263238", width=3.5, height=1.5];
+               fillcolor="#FFC107", fontcolor="#263238", width=4.0, height=1.8];
     }
     
     // Security & Monitoring Layer
@@ -94,15 +94,15 @@ digraph NavAstitva {
         label="Security & Monitoring Layer";
         style="filled,rounded";
         fillcolor="#ECEFF1";
-        fontsize=18;
+        fontsize=20;
         fontname="Arial Bold";
         color="#607D8B";
-        penwidth=3;
+        penwidth=4;
         labeljust="c";
         labelloc="t";
         
         security [label="IAM + Cognito + WAF + CloudWatch\n\nAuthentication | DDoS Protection\nMetrics & Logs", 
-                 fillcolor="#607D8B", fontcolor=white, width=3.5, height=1.5];
+                 fillcolor="#607D8B", fontcolor=white, width=4.0, height=1.8];
     }
     
     // Edge Optimization Layer
@@ -110,15 +110,15 @@ digraph NavAstitva {
         label="Edge Optimization Layer";
         style="filled,rounded";
         fillcolor="#FFF9C4";
-        fontsize=18;
+        fontsize=20;
         fontname="Arial Bold";
         color="#FFD54F";
-        penwidth=3;
+        penwidth=4;
         labeljust="c";
         labelloc="t";
         
         edge_cdn [label="Amazon CloudFront CDN\n\nVideo Caching | Content Delivery\nLow Latency | Bandwidth", 
-                 fillcolor="#FFD54F", fontcolor="#263238", width=3.5, height=1.5];
+                 fillcolor="#FFD54F", fontcolor="#263238", width=4.0, height=1.8];
     }
     
     // Main flow

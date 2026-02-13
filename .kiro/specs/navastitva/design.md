@@ -210,9 +210,22 @@ interface WorkerServiceAPI {
     workerId: string
     name: string
     skills: SkillScore[]
+    equipmentDeclarations: EquipmentDeclaration[]
     trustScore: number
     reviews: Review[]
     availability: AvailabilityStatus
+  }
+  
+  // Update equipment declaration
+  PUT /workers/{workerId}/equipment
+  Request: {
+    skillType: string
+    equipmentStatus: "own_equipment" | "not_available" | "partially_available"
+    equipmentDetails?: string
+  }
+  Response: {
+    updated: boolean
+    equipmentDeclaration: EquipmentDeclaration
   }
   
   // Update availability status
@@ -263,11 +276,45 @@ interface EmployerClientServiceAPI {
     budgetRange: {min: number, max: number}
     description: string
     voiceDescription?: AudioFile
+    equipmentRequired?: boolean
+    equipmentProvidedByEmployer?: boolean
   }
   Response: {
     postingId: string
     fairWageRecommendation: {min: number, max: number}
     topMatches: WorkerMatch[]
+  }
+  
+  // Generate digital contract using AI
+  POST /employers/{employerId}/contracts/{contractId}/generate
+  Request: {
+    workerId: string
+    postingId: string
+    scopeOfWork: string
+    duration: string
+    agreedWage: number
+    customTerms?: string
+  }
+  Response: {
+    contractId: string
+    digitalContract: DigitalContract
+    contractDocumentUrl: string
+    aiGeneratedClauses: {
+      safetyResponsibilities: string
+      workConditions: string
+      disputeResolution: string
+    }
+  }
+  
+  // Sign digital contract
+  POST /contracts/{contractId}/sign
+  Request: {
+    signedBy: string  // workerId or employerId
+    signatureHash: string
+  }
+  Response: {
+    contractStatus: "pending_signature" | "signed"
+    bothPartiesSigned: boolean
   }
   
   // Get matched workers for a posting
@@ -435,6 +482,15 @@ function matchWorkersToPosting(postingId):
         maxDistance=50  # km from posting location
     )
     
+    # Filter by equipment if required
+    if posting.equipmentRequired and not posting.equipmentProvidedByEmployer:
+        workers = workers.filter(w => 
+            w.equipmentDeclarations.find(e => 
+                e.skillType == posting.skillRequired and 
+                e.equipmentStatus == "own_equipment"
+            )
+        )
+    
     matches = []
     for worker in workers:
         # Calculate match score components
@@ -442,13 +498,15 @@ function matchWorkersToPosting(postingId):
         trustScore = worker.trustScore
         proximity = calculateProximity(worker.location, posting.location)
         availability = worker.availabilityScore
+        equipmentBonus = calculateEquipmentBonus(worker, posting)
         
-        # Weighted match score
+        # Weighted match score with equipment consideration
         matchScore = (
-            skillMatch * 0.40 +
+            skillMatch * 0.35 +
             trustScore * 0.30 +
             proximity * 0.20 +
-            availability * 0.10
+            availability * 0.10 +
+            equipmentBonus * 0.05
         )
         
         matches.append({
@@ -456,12 +514,29 @@ function matchWorkersToPosting(postingId):
             "matchScore": matchScore,
             "skillScore": skillMatch,
             "trustScore": trustScore,
-            "distance": proximity
+            "distance": proximity,
+            "hasEquipment": hasRequiredEquipment(worker, posting)
         })
     
     # Sort by match score and return top 3
     matches.sort(key=lambda x: x.matchScore, reverse=True)
     return matches[:3]
+
+function calculateEquipmentBonus(worker, posting):
+    if not posting.equipmentRequired:
+        return 0
+    
+    equipment = worker.equipmentDeclarations.find(e => e.skillType == posting.skillRequired)
+    
+    if not equipment:
+        return 0
+    
+    if equipment.equipmentStatus == "own_equipment":
+        return 100
+    elif equipment.equipmentStatus == "partially_available":
+        return 50
+    else:
+        return 0
 
 function calculateSkillMatch(worker, posting):
     # Find worker's skill score for required skill
@@ -523,6 +598,207 @@ interface PaymentServiceAPI {
     paymentUrl: string
   }
   
+  // Mark work as complete (worker action)
+  POST /payments/escrow/{escrowId}/complete
+  Request: {
+    workerId: string
+    completionProof?: string
+  }
+  Response: {
+    status: "awaiting_verification"
+  }
+  
+  // Verify and release payment (employer/client action)
+  POST /payments/escrow/{escrowId}/verify
+  Request: {
+    employerId: string
+    verified: boolean
+  }
+  Response: {
+    status: "released" | "disputed"
+    transactionId?: string
+  }
+  
+  // Raise dispute
+  POST /payments/escrow/{escrowId}/dispute
+  Request: {
+    raisedBy: string  // workerId or employerId
+    reason: string
+  }
+  Response: {
+    disputeId: string
+    status: "under_review"
+  }
+}
+```
+
+### 7. AI Contract Generation Service
+
+**Responsibilities:**
+- Generate contextually appropriate contract terms using AI
+- Customize safety requirements based on skill type
+- Ensure legal compliance with Indian labor laws
+- Translate contracts to multiple languages
+- Maintain contract templates and legal standards
+
+**AI Contract Generation Pipeline:**
+
+```python
+# Pseudocode for AI contract generation
+function generateDigitalContract(contractRequest):
+    posting = getPosting(contractRequest.postingId)
+    worker = getWorker(contractRequest.workerId)
+    employer = getEmployer(contractRequest.employerId)
+    
+    # Build context for AI
+    context = {
+        "skillType": posting.skillRequired,
+        "workScope": contractRequest.scopeOfWork,
+        "duration": contractRequest.duration,
+        "wage": contractRequest.agreedWage,
+        "workerExperience": worker.experienceLevel,
+        "location": posting.location,
+        "equipmentRequired": posting.equipmentRequired
+    }
+    
+    # Call Amazon Bedrock to generate contract clauses
+    aiResponse = bedrockClient.invokeModel(
+        modelId="anthropic.claude-3-sonnet",
+        body={
+            "prompt": f"""Generate a legally compliant work contract for Indian labor laws with the following details:
+            
+            Skill Type: {context.skillType}
+            Work Scope: {context.workScope}
+            Duration: {context.duration}
+            Agreed Wage: ₹{context.wage}
+            Location: {context.location}
+            
+            Generate the following sections:
+            1. Safety Responsibilities (specific to {context.skillType})
+            2. Work Conditions (appropriate for {context.duration} duration)
+            3. Dispute Resolution Terms (fair to both parties)
+            4. Equipment Responsibilities (worker owns: {context.equipmentRequired})
+            
+            Ensure compliance with:
+            - Indian Contract Act, 1872
+            - Payment of Wages Act, 1936
+            - Minimum Wages Act, 1948
+            - Occupational Safety, Health and Working Conditions Code, 2020
+            
+            Use simple, clear language suitable for workers with limited literacy.
+            """,
+            "max_tokens": 2000
+        }
+    )
+    
+    # Parse AI response
+    aiClauses = parseAIResponse(aiResponse)
+    
+    # Translate to worker's and employer's languages if needed
+    if worker.languagePreference != "en":
+        aiClauses.safetyResponsibilities = translateText(
+            aiClauses.safetyResponsibilities,
+            targetLanguage=worker.languagePreference
+        )
+        aiClauses.workConditions = translateText(
+            aiClauses.workConditions,
+            targetLanguage=worker.languagePreference
+        )
+    
+    # Create digital contract
+    contract = {
+        "contractId": generateContractId(),
+        "generatedDate": now(),
+        "scopeOfWork": contractRequest.scopeOfWork,
+        "duration": contractRequest.duration,
+        "agreedWage": contractRequest.agreedWage,
+        "paymentTerms": generatePaymentTerms(contractRequest.agreedWage),
+        "safetyResponsibilities": aiClauses.safetyResponsibilities,
+        "workConditions": aiClauses.workConditions,
+        "disputeResolutionTerms": aiClauses.disputeResolution,
+        "equipmentResponsibilities": generateEquipmentClause(context),
+        "workerSignature": null,
+        "employerSignature": null,
+        "verified": false
+    }
+    
+    # Store contract in database
+    saveContract(contract)
+    
+    # Generate PDF document
+    contractPdfUrl = generateContractPDF(contract)
+    
+    return {
+        "contractId": contract.contractId,
+        "digitalContract": contract,
+        "contractDocumentUrl": contractPdfUrl,
+        "aiGeneratedClauses": aiClauses
+    }
+
+function generatePaymentTerms(wage):
+    return f"""Payment Terms:
+    - Total Amount: ₹{wage}
+    - Payment Method: Escrow-based secure payment
+    - Payment Release: Upon employer verification of work completion
+    - Payment Timeline: Within 24 hours of verification
+    - Dispute Period: 7 days for raising disputes
+    """
+
+function generateEquipmentClause(context):
+    if context.equipmentRequired:
+        return "Worker shall provide their own tools and equipment necessary for the work."
+    else:
+        return "Employer shall provide all necessary tools and equipment for the work."
+```
+
+**Contract Template Structure:**
+
+```typescript
+interface ContractTemplate {
+  // Standard sections (always included)
+  header: string
+  parties: {
+    worker: WorkerInfo
+    employer: EmployerInfo
+  }
+  
+  // AI-generated sections
+  scopeOfWork: string
+  duration: string
+  compensation: {
+    amount: number
+    paymentTerms: string
+  }
+  safetyResponsibilities: string  // AI-generated based on skill type
+  workConditions: string           // AI-generated based on duration and location
+  equipmentResponsibilities: string
+  disputeResolution: string        // AI-generated fair terms
+  
+  // Legal compliance sections
+  governingLaw: string
+  jurisdiction: string
+  terminationClauses: string
+  
+  // Signatures
+  signatures: {
+    worker?: DigitalSignature
+    employer?: DigitalSignature
+  }
+}
+```
+
+**Example AI-Generated Safety Clause for Electrician:**
+
+```
+Safety Responsibilities:
+1. Worker must wear insulated gloves and safety shoes at all times
+2. Worker must use voltage testers before touching any electrical components
+3. Worker must ensure power is disconnected before starting work
+4. Worker must follow IS 732:2019 (Indian Standard for Electrical Safety)
+5. Employer must provide a safe working environment free from water/moisture
+6. Worker must report any unsafe conditions immediately
+7. Both parties must maintain adequate fire safety equipment on-site
+```
   // Mark work as complete (worker action)
   POST /payments/escrow/{escrowId}/complete
   Request: {
@@ -681,6 +957,7 @@ interface WorkerProfile {
   
   // Skills and verification
   skills: SkillScore[]
+  equipmentDeclarations: EquipmentDeclaration[]
   videos: VideoMetadata[]
   trustScore: number
   trustScoreHistory: TrustScoreSnapshot[]
@@ -698,6 +975,13 @@ interface WorkerProfile {
   fraudFlags: number
   disputeCount: number
   accountStatus: "active" | "suspended" | "banned"
+}
+
+interface EquipmentDeclaration {
+  skillType: string
+  equipmentStatus: "own_equipment" | "not_available" | "partially_available"
+  equipmentDetails?: string
+  lastUpdated: Date
 }
 
 interface VideoMetadata {
@@ -743,6 +1027,8 @@ interface Posting {
   budgetRange: {min: number, max: number}
   description: string
   voiceDescriptionUrl?: string
+  equipmentRequired?: boolean
+  equipmentProvidedByEmployer?: boolean
   
   // Matching
   matches: WorkerMatch[]
@@ -773,6 +1059,10 @@ interface Contract {
   employerId: string
   workerId: string
   
+  // Digital Contract
+  digitalContract: DigitalContract
+  contractStatus: "pending_signature" | "signed" | "active" | "completed" | "disputed" | "cancelled"
+  
   // Terms
   agreedAmount: number
   startDate: Date
@@ -788,6 +1078,37 @@ interface Contract {
   
   // Review
   review?: Review
+}
+
+interface DigitalContract {
+  contractId: string
+  generatedDate: Date
+  
+  // Contract Terms
+  scopeOfWork: string
+  duration: string
+  agreedWage: number
+  paymentTerms: string
+  safetyResponsibilities: string
+  workConditions: string
+  disputeResolutionTerms: string
+  
+  // Signatures
+  workerSignature?: DigitalSignature
+  employerSignature?: DigitalSignature
+  
+  // Verification
+  verified: boolean
+  verificationDate?: Date
+  contractDocumentUrl: string
+}
+
+interface DigitalSignature {
+  signedBy: string
+  signedAt: Date
+  ipAddress: string
+  deviceInfo: string
+  signatureHash: string
 }
 
 interface EscrowTransaction {

@@ -73,9 +73,11 @@ This is not just a platform—it's a movement toward economic justice and social
 - **Phygital_Model**: Hybrid physical-digital approach combining enrollment booths with digital platform
 - **Voice_Interface**: Multilingual voice-activated user interface supporting 12+ Indian languages
 - **Offline_Mode**: Capability to record and view content without internet connectivity
-- **AI_Matchmaking_Engine**: System that matches workers to jobs and contracts based on skills, location, and trust scores
+- **AI_Matchmaking_Engine**: System that matches workers to jobs and contracts based on skills, location, trust scores, and equipment availability
 - **Video_Verification_System**: Computer vision system analyzing skill demonstration videos
 - **Fair_Wage_Engine**: AI system recommending wages based on market rates, location, and skill level
+- **Digital_Contract**: Standardized electronic agreement between worker and employer/client defining work terms, payment, and responsibilities
+- **Equipment_Declaration**: Worker's specification of tool and equipment ownership status for their skills
 
 ## Requirements
 
@@ -258,3 +260,34 @@ This is not just a platform—it's a movement toward economic justice and social
 3. WHEN an employer/client views a worker profile, THE System SHALL log the access with timestamp and employer/client ID for audit purposes
 4. WHEN a worker deletes their account, THE System SHALL permanently remove all personal data within 30 days per data protection regulations
 5. WHEN authentication occurs, THE System SHALL use multi-factor authentication for employer/client accounts and OTP-based verification for worker accounts
+
+### Requirement 16: Digitally Verified Work Contract System
+
+**User Story:** As a worker and employer/client, I want a standardized digital contract that clearly defines work terms, so that both parties have legal clarity and protection before work begins.
+
+#### Acceptance Criteria
+
+1. WHEN an employer/client posts a job or contract and a worker accepts, THE System SHALL automatically generate a digital contract using AI (Amazon Bedrock) to create contextually appropriate terms based on skill type, work scope, duration, and industry-specific safety requirements
+2. WHEN a contract is generated, THE System SHALL require both worker and employer/client to digitally review and sign the contract before work can begin
+3. WHEN a contract is signed, THE System SHALL verify and authenticate the contract, securely store it, and link it to the escrow payment mechanism
+4. WHEN either party requests access, THE System SHALL provide the signed contract with all terms visible and downloadable
+5. WHEN a contract is not signed by both parties, THE System SHALL prevent work from starting and keep escrow payment on hold until contract completion
+
+**AI Contract Generation Details:**
+- Amazon Bedrock analyzes the job posting and generates appropriate contract clauses
+- AI customizes safety responsibilities based on skill type (e.g., electrical work requires specific safety protocols)
+- AI suggests fair dispute resolution terms based on work type and duration
+- AI translates contract terms into both parties' preferred languages
+- System maintains legal compliance with Indian Contract Act and labor laws
+
+### Requirement 17: Skill & Equipment Declaration System
+
+**User Story:** As a worker, I want to declare my skills and equipment ownership, so that employers/clients understand my capabilities and avoid misunderstandings about tool availability.
+
+#### Acceptance Criteria
+
+1. WHEN a worker creates or updates their profile, THE System SHALL require specification of primary skill, experience level, and equipment ownership status for each skill
+2. WHEN a worker declares equipment status, THE System SHALL allow selection of "Own Equipment", "Equipment Not Available", or "Equipment Partially Available" with details
+3. WHEN an employer/client views a worker profile, THE System SHALL clearly display the worker's equipment availability alongside their skills
+4. WHEN the AI_Matchmaking_Engine ranks workers, THE System SHALL consider equipment availability as a matching factor and prioritize workers with required equipment when specified in job posting
+5. WHEN a worker's equipment status changes, THE System SHALL allow profile updates and notify employers/clients of any active contracts affected by the change
